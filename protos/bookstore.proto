@@ -1,0 +1,103 @@
+// 定义protobuf语法版本
+syntax = "proto3";
+
+// 定义包名
+package bookstore;
+
+// 指定Go包路径，用于生成Go代码时的包名
+option go_package = "pb/bookstore";
+
+// 图书信息消息定义
+message Book {
+  string id = 1;        // 图书唯一标识符
+  string title = 2;     // 图书标题
+  string author = 3;    // 作者
+  float price = 4;      // 价格
+  string description = 5; // 图书描述
+  int32 publish_year = 6; // 出版年份
+}
+
+// 创建图书请求消息
+message CreateBookRequest {
+  Book book = 1;  // 要创建的图书信息
+}
+
+// 创建图书响应消息
+message CreateBookResponse {
+  string id = 1;      // 创建的图书ID
+  string message = 2; // 操作结果消息
+}
+
+// 获取图书请求消息
+message GetBookRequest {
+  string id = 1;  // 要获取的图书ID
+}
+
+// 获取图书响应消息
+message GetBookResponse {
+  Book book = 1;  // 图书信息
+}
+
+// 更新图书请求消息
+message UpdateBookRequest {
+  Book book = 1;  // 更新的图书信息
+}
+
+// 更新图书响应消息
+message UpdateBookResponse {
+  string message = 1;  // 操作结果消息
+}
+
+// 删除图书请求消息
+message DeleteBookRequest {
+  string id = 1;  // 要删除的图书ID
+}
+
+// 删除图书响应消息
+message DeleteBookResponse {
+  string message = 1;  // 操作结果消息
+}
+
+// 列出所有图书请求消息
+message ListBooksRequest {
+  int32 page = 1;      // 页码
+  int32 page_size = 2; // 每页大小
+}
+
+// 列出所有图书响应消息
+message ListBooksResponse {
+  repeated Book books = 1;  // 图书列表
+  int32 total = 2;         // 总数量
+}
+
+// 按价格区间查询图书请求
+message SearchBooksByPriceRequest {
+  float min_price = 1;  // 最低价格
+  float max_price = 2;  // 最高价格
+}
+
+// 按价格区间查询图书响应
+message SearchBooksByPriceResponse {
+  repeated Book books = 1;  // 符合条件的图书列表
+}
+
+// 图书管理服务定义
+service BookService {
+  // 创建图书 - 一元RPC
+  rpc CreateBook(CreateBookRequest) returns (CreateBookResponse);
+  
+  // 获取图书信息 - 一元RPC
+  rpc GetBook(GetBookRequest) returns (GetBookResponse);
+  
+  // 更新图书信息 - 一元RPC
+  rpc UpdateBook(UpdateBookRequest) returns (UpdateBookResponse);
+  
+  // 删除图书 - 一元RPC
+  rpc DeleteBook(DeleteBookRequest) returns (DeleteBookResponse);
+  
+  // 列出所有图书 - 一元RPC
+  rpc ListBooks(ListBooksRequest) returns (ListBooksResponse);
+  
+  // 按价格区间查询图书 - 一元RPC
+  rpc SearchBooksByPrice(SearchBooksByPriceRequest) returns (SearchBooksByPriceResponse);
+} 
